@@ -1,13 +1,19 @@
 
 import React from "react";
-import API from "../../utils/API";
+import API from "../utils/API";
 
 // class ShowArticles extends React.Component{
 class ShowArticles extends React.Component {
     
-    saveArticle = (data) => {
+    saveArticle = (data, id) => {
         console.log("saving")
-        API.saveArticle(data);
+        API.saveArticle(data)
+        .then(res => {
+            console.log(this);
+            document.getElementById(id).style.display = "none";
+            document.getElementById(`saved_${id}`).style.visibility = "visible"
+        })
+        .catch(err => console.log(err));
     }
 
     render() {  
@@ -37,7 +43,8 @@ class ShowArticles extends React.Component {
                                             <span>{data.date}</span>
                                         </div>
                                         <div className="col-4 col-md-1">
-                                            <button type="button" className="btn btn-info btn-sm" onClick={() => this.saveArticle(data)}>Save</button>
+                                            <button type="button" className="btn btn-info btn-sm" id={article._id} onClick={() => this.saveArticle(data,article._id)}>Save</button>
+                                            <button type="button" className="btn btn-success btn-sm" id={`saved_${article._id}`} style={{visibility:"hidden"}}>Saved</button>
                                         </div>
                                     </div>
                                 </li>
