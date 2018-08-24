@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, ShowArticles } from '../../components';
+import { Form, ShowArticles, ShowSavedArticles } from '../../components';
 import axios from "axios";
+import API from "../../utils/API";
 
 class searchArticles extends React.Component {
   constructor(props){
@@ -14,7 +15,7 @@ class searchArticles extends React.Component {
       validStartYear : {visibility: 'hidden'},
       validEndYear : {visibility: 'hidden'},
       searchResult: [],
-      saveArticles: []
+      savedArticles: []
     }
   }
 
@@ -27,6 +28,17 @@ class searchArticles extends React.Component {
       return `${year}${month}${day}`;
     }
     return "";
+  }
+
+  componentDidMount = () => {
+    API.getSavedArticles()
+    .then(res => {
+        console.log(res)
+        this.setState({
+            savedArticles: res.data
+        })
+    })
+    .catch(err => console.log(err))
   }
 
   handleInputChange = event => {
@@ -123,6 +135,7 @@ class searchArticles extends React.Component {
             validkey={this.state.validkey}
           />
           <ShowArticles data={this.state.searchResult} />
+          <ShowSavedArticles data={this.state.savedArticles}/>
       </div>
     );
   }

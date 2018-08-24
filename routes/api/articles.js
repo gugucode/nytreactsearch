@@ -5,9 +5,12 @@ const articlesController = require("../../controllers/articlesController");
 router.route("/save")
   .post(articlesController.create);
 
+router.route("/saved")
+  .get(articlesController.findAll);
+  
 // Matches with "/api/books/:id"
 router
-  .route("/article/:id")
+  .route("/delete/:id")
   .delete(articlesController.remove);
 
 module.exports = router;
