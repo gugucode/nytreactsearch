@@ -1,4 +1,5 @@
 {
+  "homepage": "https://gugucode.github.io/nytreactsearch/",
   "name": "nytreactsearch",
   "version": "1.0.0",
   "main": "server.js",
@@ -10,7 +11,8 @@
     "seed": "node scripts/seedDB.js",
     "install": "cd client && yarn install",
     "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "repository": "git@github.com:gugucode/nytreactsearch.git",
   "author": "gugucode <meiyuechang@gmail.com>",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "concurrently": "^3.6.1",
+    "gh-pages": "^1.2.0",
     "nodemon": "^1.18.3"
   }
 }
