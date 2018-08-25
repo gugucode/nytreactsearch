@@ -4,7 +4,6 @@ import API from "../utils/API";
 import ShowSavedArticles from "./showSavedArticles";
 import {ShowOneArticle} from "./showOneArticle";
 
-// class ShowArticles extends React.Component{
 class ShowArticles extends React.Component {
     constructor(props){
         super(props);
@@ -13,6 +12,7 @@ class ShowArticles extends React.Component {
         }
     }
 
+    // Get all saved articles from DB
     getSavedArticlesEvent = () => {
         API.getSavedArticles()
         .then(res => {
@@ -24,7 +24,8 @@ class ShowArticles extends React.Component {
         .catch(err => console.log(err))
     }
 
-    saveArticle = (data, id) => {
+    // Save new article to DB
+    saveArticleToDB = (data, id) => {
         console.log("saving")
         API.saveArticle(data)
         .then(res => {
@@ -36,6 +37,7 @@ class ShowArticles extends React.Component {
         .catch(err => console.log(err));
     }
 
+    // get all saved articles from db once this page is load
     componentDidMount = () => {
         this.getSavedArticlesEvent();
     }
@@ -51,7 +53,7 @@ class ShowArticles extends React.Component {
                     <div className="panel-body">
                         <ul className="list-group">
                             {this.props.data.map(article => (
-                                    <ShowOneArticle key={article._id} article={article} saveArticle={this.saveArticle}/>
+                                    <ShowOneArticle key={article._id} article={article} saveArticleToDB={this.saveArticleToDB}/>
                                 )  
                             )}
                         </ul>

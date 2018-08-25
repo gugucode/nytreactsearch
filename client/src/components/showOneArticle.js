@@ -19,7 +19,7 @@ export const ShowOneArticle = (props => {
                     <span>{data.date}</span>
                 </div>
                 <div className="col-4 col-md-1">
-                    <button type="button" className="btn btn-info btn-sm" id={article._id} onClick={() => props.saveArticle(data,article._id)}>Save</button>
+                    <button type="button" className="btn btn-info btn-sm" id={article._id} onClick={() => props.saveArticleToDB(data,article._id)}>Save</button>
                     <button type="button" className="btn btn-success btn-sm" id={`saved_${article._id}`} style={{visibility:"hidden"}}>Saved</button>
                 </div>
             </div>

@@ -2,7 +2,6 @@ import React from "react";
 import API from "../../utils/API";
 import ShowSavedArticles from "../../components/showSavedArticles";
 
-// class ShowArticles extends React.Component{
 class SavedArticles extends React.Component {
     constructor(props){
         super(props);
@@ -18,7 +17,6 @@ class SavedArticles extends React.Component {
     getSavedArticlesEvent = () => {
         API.getSavedArticles()
         .then(res => {
-            console.log(res)
             this.setState({
                 savedArticles: res.data
             })

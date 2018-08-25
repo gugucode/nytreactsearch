@@ -9,7 +9,7 @@ class searchArticles extends React.Component {
     this.state = {   
       searchKey: "",
       validkey : {visibility: 'hidden'},
-      retrieveNum: 2,
+      retrieveNum: 1,
       startYear: "",
       endYear: "",
       validStartYear : {visibility: 'hidden'},
@@ -19,9 +19,9 @@ class searchArticles extends React.Component {
     }
   }
 
+  // change date format to "YYYYMMDD"
   convertDate = (d) => {
     if(d !== ""){
-      console.log(typeof d)
       const year = d.getFullYear();
       const month = d.getMonth()+1 < 10 ? `0${d.getMonth()+1}`: `${d.getMonth()+1}`;
       const day = d.getDate() < 10 ? `0${d.getDate()}`: `${d.getDate()}`;;
@@ -33,28 +33,59 @@ class searchArticles extends React.Component {
   getSavedArticlesEvent = () => {
     API.getSavedArticles()
     .then(res => {
-        console.log(res)
-        this.setState({
-            savedArticles: res.data
-        })
+        this.setState({savedArticles: res.data})
     })
     .catch(err => console.log(err))
   }
 
+  // handle search key and retrieveNum change
   handleInputChange = event => {
     const { name, value } = event.target;
-    console.log(name)
-    console.log(value)
     this.setState({
-      [name]: value
+      [name]: value,
+      validkey: {visibility: 'hidden'}
     })
-    this.setState({validkey: {visibility: 'hidden'}})
   }
 
+  // handle start year change and validation
+  handleStartYearChange = event => {
+    const startYear = new Date(event.target.value);
+    let d = {
+      startYear: "",
+      validStartYear: {visibility: 'visible'}
+    }
+
+    if(this.state.endYear === "" || startYear < this.state.endYear){
+      d.startYear = startYear;
+      d.validStartYear = {visibility: 'hidden'}
+    }
+
+    this.setState(d);
+    
+  };
+
+  // handle end year change and validation
+  handleEndYearChange = event => {
+    const endYear = new Date(event.target.value);
+    let d = {
+      endYear: "",
+      validEndYear: {visibility: 'visible'}
+    }
+
+    if(this.state.startYear === "" || endYear > this.state.startYear){
+      d.endYear = endYear;
+      d.validEndYear = {visibility: 'hidden'}
+    }
+    this.setState(d)
+    
+  };
+
+  // Handle clear button event
   handlClear = event => {
     this.setState({searchResult: []})
   }
 
+  // handle Submit event
   handleSubmit = event => {
     event.preventDefault();
     const specialChar = ['*','$','#','%','@','&','^','~']
@@ -65,7 +96,6 @@ class searchArticles extends React.Component {
       'api-key': "414e5ea5e0604d6fac912d88e362063a",
       'q': this.state.searchKey,
       'sort': 'newest',
-      'page': parseInt(this.state.retrieveNum)
     };
 
     if(begin_date !== ""){
@@ -76,52 +106,19 @@ class searchArticles extends React.Component {
       d.end_date = end_date;
     }
 
-    console.log(d)
+    // if search key is not empty and special character, get articles from New York Time API
     if(this.state.searchKey !== "" && specialChar.indexOf(this.state.searchKey) === -1){
-      axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json', {
-        params: d
-      })
+      axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json?', {params: d})
       .then(response => {
-        console.log(response.data.response.docs)
-        this.setState({searchResult: response.data.response.docs})
+        this.setState({searchResult: response.data.response.docs.slice(0,this.state.retrieveNum)})
       })
-      .catch(function (error) {
-        console.log(error);
-        
-      });
+      .catch(error => {console.log(error);});
     }else{
       this.setState({validkey: {visibility: 'visible'}})
     }
-    // console.log(this.state)
   };
 
-  handleStartYearChange = event => {
-    const startYear = new Date(event.target.value);
-    console.log(typeof startYear)
-    if(this.state.endYear === "" || startYear < this.state.endYear){
-      this.setState({startYear: startYear})
-      this.setState({validStartYear: {visibility: 'hidden'}})
-    }else{
-      this.setState({
-        startYear: "",
-        validStartYear: {visibility: 'visible'}
-      })
-    }
-  };
-
-  handleEndYearChange = event => {
-    const endYear = new Date(event.target.value);
-    if(this.state.startYear === "" || endYear > this.state.startYear){
-      this.setState({endYear: endYear})
-      this.setState({validEndYear: {visibility: 'hidden'}})
-    }else{
-      this.setState({
-        endYear: "",
-        validEndYear: {visibility: 'visible'}
-      })
-    }
-  };
-
+  // print main page
   render() {
     return (
       <div>
