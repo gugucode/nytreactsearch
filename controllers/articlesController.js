@@ -18,8 +18,17 @@ module.exports = {
   create: function(req, res) {
     console.log(req.body);
     db.Article
-      .create(req.body)
-      .then(dbModel => res.json(dbModel))
+      .find({articleId: req.body.articleId})
+      .then(data => {
+        if(!data.length){
+          db.Article
+          .create(req.body)
+          .then(dbModel => res.json(dbModel))
+          .catch(err => res.status(422).json(err));
+        }else{
+          res.status(200).end();
+        }
+      })
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {

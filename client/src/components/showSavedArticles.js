@@ -1,12 +1,15 @@
 
 import React from "react";
 import API from "../utils/API";
+import $ from "jquery";
 
 class ShowSavedArticles extends React.Component {
+    // Handle remove article event
     removeArticle = (id) => {
         API.deleteArticle(id)
         .then(res => {
-            console.log(res.data)
+            // if article is removed from DB, hide the article
+            $(`#saved_${res.data._id}`).fadeOut("slow");
         })
         .catch(err => console.log(err))
     }
@@ -19,17 +22,24 @@ class ShowSavedArticles extends React.Component {
                     Saved Articles
                 </div>
                 <div className="panel-body">
+                    <ul className="list-group">
+                    {/* print the saved articles */}
                     {this.props.data.map(article => (
-                        <div key={article._id} className="row">
-                            <div className="col-8">
-                                <a href={article.url}>{article.title}</a>
-                                <p>{article.date}</p>
+                        <li key={article._id} className="list-group-item d-flex justify-content-between align-items-center" id={`saved_${article._id}`}>
+                            <div className="row">
+                                <div className="col-12 col-md-9">
+                                    <a href={article.url}>{article.title}</a>
+                                </div>
+                                <div className="col-5 col-md-2">
+                                    <p>{(article.date).slice(0,10)}</p>
+                                </div>
+                                <div className="col-4 col-md-1">
+                                    <button type="button" className="btn btn-warning btn-sm" onClick={()=> this.removeArticle(article._id)}>remove</button>
+                                </div>
                             </div>
-                            <div className="col-3">
-                                <button type="button" className="btn btn-info" onClick={()=> this.removeArticle(article._id)}>remove</button>
-                            </div>
-                        </div>
+                        </li>
                     ))}
+                    </ul>
                 </div>
             </div>
         );

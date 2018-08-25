@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Nav from './components/nav';
 import searchArticles from './pages/Home/searchArticles';
-import DisplaySavedArticles from './pages/SavedArticles/showSavedArticles';
+import ShowSavedArticles from './pages/Saved/showSavedArticles';
 
 
 class App extends React.Component {
@@ -13,8 +13,7 @@ class App extends React.Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={searchArticles} />
-            {/* <Route exact path="/articles/save" component={searchArticles} /> */}
-            <Route path="/" component={DisplaySavedArticles} />
+            <Route exact path="/savedArticles" component={ShowSavedArticles} />
           </Switch>
         </div>
       </Router>

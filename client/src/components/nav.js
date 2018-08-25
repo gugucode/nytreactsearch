@@ -8,7 +8,14 @@ class Nav extends React.Component{
                 <h2 className="text-center">
                     <i className="fas fa-newspaper"></i>
                     New York Times Search
-                </h2>                
+                </h2>
+                <hr className="my-4" />
+                <blockquote className="blockquote-reverse small">
+                    <p>Reading gives us someplace to go when we have to stay where we are.</p>
+                    <footer>Mason Cooley</footer>
+                </blockquote>              
+                <a className="btn btn-primary btn-sm mr-2" href="/savedArticles" role="button" style={{margin:"1em"}}>Saved Articles</a>
+                <a className="btn btn-primary btn-sm" href="/" role="button">Search New Articles</a>                 
             </div>
         );
     }

@@ -1,24 +1,27 @@
-import React from 'react';
-import {Form,ShowArticles, ShowSavedArticles } from '../../components';
+import React from "react";
 import API from "../../utils/API";
-// import axios from "axios";
+import ShowSavedArticles from "../../components/showSavedArticles";
 
-class DisplaySavedArticles extends React.Component {
-
+// class ShowArticles extends React.Component{
+class SavedArticles extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             savedArticles: []
         }
     }
-    
+
     componentDidMount = () => {
+        this.getSavedArticlesEvent();
+    }
+    
+    getSavedArticlesEvent = () => {
         API.getSavedArticles()
         .then(res => {
             console.log(res)
-            // this.setState({
-            //     savedArticles: res
-            // })
+            this.setState({
+                savedArticles: res.data
+            })
         })
         .catch(err => console.log(err))
     }
@@ -32,4 +35,4 @@ class DisplaySavedArticles extends React.Component {
     }
 }
 
-export default DisplaySavedArticles;
+export default SavedArticles;

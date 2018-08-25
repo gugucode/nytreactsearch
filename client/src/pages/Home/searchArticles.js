@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, ShowArticles, ShowSavedArticles } from '../../components';
+import { Form, ShowArticles } from '../../components';
 import axios from "axios";
 import API from "../../utils/API";
 
@@ -9,7 +9,7 @@ class searchArticles extends React.Component {
     this.state = {   
       searchKey: "",
       validkey : {visibility: 'hidden'},
-      retrieveNum: 0,
+      retrieveNum: 2,
       startYear: "",
       endYear: "",
       validStartYear : {visibility: 'hidden'},
@@ -30,7 +30,7 @@ class searchArticles extends React.Component {
     return "";
   }
 
-  componentDidMount = () => {
+  getSavedArticlesEvent = () => {
     API.getSavedArticles()
     .then(res => {
         console.log(res)
@@ -43,6 +43,8 @@ class searchArticles extends React.Component {
 
   handleInputChange = event => {
     const { name, value } = event.target;
+    console.log(name)
+    console.log(value)
     this.setState({
       [name]: value
     })
@@ -61,9 +63,9 @@ class searchArticles extends React.Component {
  
     let d = {
       'api-key': "414e5ea5e0604d6fac912d88e362063a",
-          q: this.state.searchKey,
-          sort: 'newest',
-          page: this.state.retrieveNum,
+      'q': this.state.searchKey,
+      'sort': 'newest',
+      'page': parseInt(this.state.retrieveNum)
     };
 
     if(begin_date !== ""){
@@ -74,11 +76,10 @@ class searchArticles extends React.Component {
       d.end_date = end_date;
     }
 
+    console.log(d)
     if(this.state.searchKey !== "" && specialChar.indexOf(this.state.searchKey) === -1){
       axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json', {
-        params: {
-          ...d
-        }
+        params: d
       })
       .then(response => {
         console.log(response.data.response.docs)
@@ -91,7 +92,7 @@ class searchArticles extends React.Component {
     }else{
       this.setState({validkey: {visibility: 'visible'}})
     }
-    console.log(this.state)
+    // console.log(this.state)
   };
 
   handleStartYearChange = event => {
@@ -123,7 +124,7 @@ class searchArticles extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
           <Form 
             handleInputChange={this.handleInputChange}
             handleSubmit={this.handleSubmit} 
@@ -135,7 +136,6 @@ class searchArticles extends React.Component {
             validkey={this.state.validkey}
           />
           <ShowArticles data={this.state.searchResult} />
-          <ShowSavedArticles data={this.state.savedArticles}/>
       </div>
     );
   }

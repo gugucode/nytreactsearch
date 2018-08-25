@@ -2,8 +2,7 @@
 import React from "react";
 
 export const Form = (props) => {
-    // constructor()
-    
+
     return (
         <div className="panel panel-info">
             <div className="panel-heading">
@@ -12,6 +11,7 @@ export const Form = (props) => {
             </div>
             <div className="panel-body">
                 <form onSubmit={props.handleSubmit}>
+                    {/* Search key word */}
                     <div className="form-group">
                         <label>Search Term:</label>
                         <input onChange={props.handleInputChange} type="text" className="form-control" name="searchKey" />
@@ -22,9 +22,9 @@ export const Form = (props) => {
                     <div className="form-group">
                         <label>Number of Records to Retrieve:</label>
                         <select onChange={props.handleInputChange} className="form-control" name="retrieveNum">
-                        <option value={0}>10</option>
-                        <option value={1}>20</option>
-                        <option value={2}>30</option>
+                            <option value={0}>10</option>
+                            <option value={1}>20</option>
+                            <option value={2}>30</option>
                         </select>
                     </div>
                     <div className="form-group">
@@ -41,7 +41,7 @@ export const Form = (props) => {
                             Please provide a valid end year!
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-info btn-md mx-2"><i className="fas fa-search"></i>Submit</button>
+                    <button type="submit" className="btn btn-info btn-md mx-2" style={{margin:"1em"}}><i className="fas fa-search"></i>Submit</button>
                     <a  onClick={props.handlClear} className="btn btn-info btn-md mx-2"><i className="fas fa-trash-alt"></i>Clear Results</a>
                 </form>
             </div>
@@ -49,5 +49,3 @@ export const Form = (props) => {
     );
     
 }
-
-// export default Form;
